@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://cs08r7nmhcpm"]
+
+[ext_resource type="ArrayMesh" uid="uid://cx78jhtroomb2" path="res://game/scenes/items/torch/torch.res" id="1_57blb"]
+[ext_resource type="Script" uid="uid://cius56ssc3wi6" path="res://game/scenes/items/torch/torch.gd" id="1_x8p5b"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_57blb"]
+size = Vector3(0.272461, 0.480469, 0.200928)
+
+[node name="Torch" type="RigidBody3D"]
+collision_layer = 2
+script = ExtResource("1_x8p5b")
+
+[node name="torch" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+layers = 2
+mesh = ExtResource("1_57blb")
+skeleton = NodePath("")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000792511, 0.0162757, -0.0847168)
+light_energy = 2.0
+spot_range = 5.99636
+spot_angle = 16.3088
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.999969, -0.00789425, 0.000369473, 0.000435612, 0.00837875, -0.999965, 0.00789088, 0.999934, 0.00838193, -0.000104782, 0.069778, 0.0102882)
+shape = SubResource("BoxShape3D_57blb")
