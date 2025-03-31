@@ -87,9 +87,10 @@ var can_crouch: bool = true
 var can_sprint: bool = true
 var can_pause: bool = true
 
-const BATTERY = preload("res://game/scenes/items/battery/battery.tscn")
-const HAND_MIRROR = preload("res://game/scenes/items/mirror/hand_mirror.tscn")
+const HAND_MIRROR = preload("res://game/scenes/items/mirror/game_mirror1.tscn")
 const TORCH = preload("res://game/scenes/items/torch/torch.tscn")
+
+var player_torch: RayCast3D
 
 func _ready() -> void:
 	default_view_bobbing_amount = view_bobbing_amount
@@ -134,6 +135,18 @@ func _process(_delta: float):
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		# Handling camera in '_process' so that camera movement is framerate independent
 		_handle_camera_motion()
+		
+	if right_hand.get_child_count() > 0:
+		var item = right_hand.get_child(0)
+		if item is Torch:
+			if item.light.is_colliding():
+				print("NOICE")
+
+	if left_hand.get_child_count() > 0:
+		var item = left_hand.get_child(0)  # <- FIXED
+		if item is Torch:
+			if item.light.is_colliding():
+				print("NOICE")
 		
 	if pick_up.is_colliding():
 		if pick_up.get_collider() is HandMirror:

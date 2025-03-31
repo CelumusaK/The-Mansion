@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=4 uid="uid://ckhvxmpf5epbv"]
+
+[ext_resource type="Texture2D" uid="uid://nb65rgcd1doe" path="res://assets/items/mirrors_0.png" id="1_fm8ce"]
+[ext_resource type="Script" uid="uid://c2h2c0tvi21c6" path="res://game/scenes/items/mirror/game_mirror.gd" id="1_teqlb"]
+[ext_resource type="Texture2D" uid="uid://bd0gs0jvakc1t" path="res://assets/items/mirrors_1.png" id="2_teqlb"]
+[ext_resource type="Texture2D" uid="uid://mfotiotjuh35" path="res://assets/items/mirrors_2.png" id="3_102fo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ghn4"]
+resource_name = "Mirror1"
+cull_mode = 2
+albedo_texture = ExtResource("1_fm8ce")
+metallic = 1.0
+metallic_texture = ExtResource("2_teqlb")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_teqlb")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_102fo")
+ao_enabled = true
+ao_texture = ExtResource("2_teqlb")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_3uqgs"]
+_surfaces = [{
+"aabb": AABB(8.075, 6, 1, 0.25, 4, 8),
+"format": 34896613377,
+"index_count": 84,
+"index_data": PackedByteArray("AAABAAIAAgABAAMABAADAAEAAAAEAAEABAAFAAMABgAEAAAABgAFAAQABwADAAUABwAFAAYAAgADAAcACAAGAAAACQAAAAIACQAIAAAACgACAAcACgAJAAIACwAHAAYACwAKAAcACAALAAYADAAJAAoADQALAAgADgAIAAkADgANAAgADAAOAAkADQAPAAsADwAKAAsADgAPAA0ADwAMAAoADgAMAA8A"),
+"name": "Mirror1",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("AABTC2/3AABlZm/t6PIAAAAAq/Rv9wAAZWZv7RYNAABlZo8S6PIAAGVmjxIWDQAAAABTC48IAAAAAKv0jwgAAAAAAAD//wAAAAD/////AAAAAP//AAAAAAAAAAAAAAAA/////wAAAAD//wAA//8AAP///////wAA//8AAAAAAAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_btd5a"]
+resource_name = "Sketchfab_Scene_MirrorLPB_Mirror1_0"
+_surfaces = [{
+"aabb": AABB(8.075, 6, 1, 0.25, 4, 8),
+"attribute_data": PackedByteArray("EQDt/7Rn2PoFa+3/YgPY+t/qMfqKddvy3+rb8op1MfqKdWPr3+q48op1uPLf6mPrfeBU+tt4af+KdVT6LN1p/4p1vdLb2REA29m90op1EQCs8xEAB/jj1pnzCdsZ+DgEqvwF20/4NwS9/BEAPfjf1njhu+rN6BEAzei76njhEQBU4REA/9m76v/ZEQBU4bvqEQC76mZ1EQBmdbvqEQARAHbzEQBF7uLiRe7qB3bzvOrx6L3qIe7qByHu5OLx6BEAEQDb8jZwtPpCBbT6ZnXb8mZ1uPJCBd/qNnDf6hEAuPI="),
+"format": 34896613399,
+"index_count": 84,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEANAA1ADYANAA3ADUA"),
+"material": SubResource("StandardMaterial3D_5ghn4"),
+"name": "Mirror1",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 56,
+"vertex_data": PackedByteArray("AABTC2/3+xplZm/t6PL7GgAAq/Rv9/saZWaPEujy+xr/////////PwAAAAD///8/AAD//////z///wAA////P///AAAAAAAAAAD//wAAAAAAAAAAAAAAAP////8AAAAAAACr9I8IUjdlZo8SFg1SNwAAUwuPCFI3ZWZv7RYNUjdlZo8S6PKqKmVmb+0WDaoqZWZv7ejyqiplZo8SFg2qKgAAUwuPCBY5ZWaPEujyFjkAAFMLb/cWOWVmjxIWDRY5AACr9G/3AhhlZm/tFg0CGAAAq/SPCAMYZWZv7ejyARj//wAA//8AAAAAAAAAAAAAAAAAAP//AAD//wAAAAAAAP////8AAP8/AAD//////z8AAP//AAD/P/////////8/////////qir//wAAAACqKv//AAD//6oq/////wAAqioAAP//AACqKgAAq/Rv96oqAACr9I8IqioAAP////+qKgAAAAD//6kqAABTC48IqSoAAFMLb/epKgAAAAAAAKoqAAAAAAAAqioAAKv0jwiqKgAAUwuPCKoqAAD//wAAqioAAP////+qKgAAUwtv96oqAACr9G/3qioAAAAA//+qKijNKM0ozSjNKM0ozSjNKM3//////////////////////7//v/+//7//v/+//7//v3DfcN9w33DfcN9w33DfcN9U1VTVVNVU1VTVVNVU1VTVrOGpvKzhqbys4am8rOGpvMTLdejEy3Xow8t26MXLdOj/f/8//3//P/9//z//f/8/////f////3////9/////f6qqVFWqqlRVqqpUVaqqVFVU1VTVVNVU1VTVVNVU1VTVVdVU1VXVVNVV1VPVVNVU1VTVVNVU1VTVVNVU1VTVVNVU1VTVVNVU1VTVVNVU1VTV")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_3uqgs")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fm8ce"]
+size = Vector3(0.453125, 0.815918, 0.0858154)
+
+[node name="HandMirror" type="RigidBody3D"]
+collision_layer = 2
+script = ExtResource("1_teqlb")
+
+[node name="MirrorLPB_Mirror1_0" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-09, 0.1, 4.37114e-09, 0, -4.37114e-09, 0.1, 0.1, 4.37114e-09, 1.91069e-16, -0.789018, -0.533969, -1.0392)
+mesh = SubResource("ArrayMesh_btd5a")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.041748, -0.235934)
+shape = SubResource("BoxShape3D_fm8ce")

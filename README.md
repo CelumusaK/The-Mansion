@@ -28,3 +28,9 @@ Player.tscn contains the player character scene. Copy it to whichever scene, whe
 
 #Hand Mirror
 "mirror" (https://skfb.ly/o6WUo) by Dinara Gabdullina is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+#Mirrors
+"Mirrors" (https://skfb.ly/6UuXp) by ViktorKom is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+#Gothic Mirror
+"Gothic Mirror" (https://skfb.ly/oxRZp) by croklin is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

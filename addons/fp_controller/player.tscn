@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://dlbkch6iuy8gn"]
+[gd_scene load_steps=24 format=3 uid="uid://dlbkch6iuy8gn"]
 
 [ext_resource type="Script" uid="uid://dq21xphwqcv2x" path="res://addons/fp_controller/scripts/player.gd" id="1_5ras8"]
 [ext_resource type="Script" uid="uid://b78cs6djckl0b" path="res://addons/fp_controller/scripts/smooth_camera.gd" id="2_1py82"]
 [ext_resource type="Script" uid="uid://dwvci74et3dd5" path="res://addons/fp_controller/scripts/player_state_machine.gd" id="2_wwa58"]
+[ext_resource type="PackedScene" uid="uid://cs08r7nmhcpm" path="res://game/scenes/items/torch/torch.tscn" id="3_njw88"]
 [ext_resource type="Script" uid="uid://b62fesxm4ghgr" path="res://addons/fp_controller/scripts/player_move_state/idle.gd" id="3_xe000"]
 [ext_resource type="Script" uid="uid://h11hds7gra4b" path="res://addons/fp_controller/scripts/player_move_state/jump.gd" id="4_1lr3q"]
 [ext_resource type="Script" uid="uid://brvfx3j8hnniy" path="res://addons/fp_controller/scripts/player_move_state/walk.gd" id="5_bwgwe"]
@@ -329,6 +330,8 @@ transform = Transform3D(0.879058, 0.476714, 0, -0.476714, 0.879058, 0, 0, 0, 1, 
 
 [node name="LeftHand" type="Node3D" parent="CameraPivot/SmoothCamera"]
 transform = Transform3D(0.951562, -0.307456, 0, 0.307456, 0.951562, 0, 0, 0, 1, -0.266, -0.248, -0.252)
+
+[node name="Torch" parent="CameraPivot/SmoothCamera/LeftHand" instance=ExtResource("3_njw88")]
 
 [node name="PickUp" type="RayCast3D" parent="CameraPivot/SmoothCamera"]
 transform = Transform3D(1.00021, 0, 0, 0, -1.0248e-07, -1.00021, 0, 2.34447, -4.37206e-08, 0, 0, 0)

@@ -1,0 +1,19 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://blwo5arqrtlto"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upmy5"]
+sky_curve = 0.00113195
+sky_energy_multiplier = 0.0
+energy_multiplier = 0.8
+
+[sub_resource type="Sky" id="Sky_upmy5"]
+sky_material = SubResource("ProceduralSkyMaterial_upmy5")
+radiance_size = 0
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_upmy5")
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.536079, 0.514887, 0.52303, 1)
+fog_sun_scatter = 0.21
+fog_density = 0.2021
