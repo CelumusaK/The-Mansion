@@ -1,15 +1,27 @@
 class_name Sprint extends PlayerState
 
+@export var run_breath: AudioStreamPlayer3D
+@export var run_footsteps: AudioStreamPlayer3D
+@export var stamina: ProgressBar
+
 var input_dir: Vector2
 var move_speed: float
 
 
 func enter(_msg := {}) -> void:
+	player.is_sprinting = true
+	run_breath.play()
+	run_footsteps.play()
 	if player.is_crouched:
 		player.toggle_crouch()
 	
 	player.view_bobbing_amount *= 1.3
 
+func exit():
+	player.is_sprinting = false
+	run_breath.stop()
+	run_footsteps.stop()
+	
 
 func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed(player.JUMP) && player.is_on_floor() && player.allow_jump:
@@ -29,12 +41,17 @@ func handle_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed(player.SPRINT):
 		state_machine.transition_to(state_machine.movement_state[state_machine.WALK])
 
+func update(delta: float):
+	stamina.value -= 1
+	stamina.value = stamina.value
+	if stamina.value <= 0:
+		state_machine.transition_to(state_machine.movement_state[state_machine.IDLE])
 
 func physics_update(_delta: float) -> void:
 	input_dir = player.input_direction
 	var direction := (player.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	if input_dir.y > 0:
+	if input_dir.y > 0 or stamina.value <= 0:
 		move_speed = player.walk_back_speed
 	else:
 		move_speed = player.sprint_speed

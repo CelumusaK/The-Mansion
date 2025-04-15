@@ -10,6 +10,50 @@ var current_state : State
 var states : Dictionary = {}
 var state_to_follow: String
 
+# Make the zombie face its movement direction
+static func face_movement_direction(zombie, velocity: Vector3, delta: float, rotation_speed: float = 5.0):
+	if velocity.length() > 0.1:
+		var look_direction = velocity.normalized()
+		# Only rotate on the horizontal plane (y-axis)
+		look_direction.y = 0
+		if look_direction != Vector3.ZERO:
+			# Create a rotation that points in the direction of movement
+			var target_rotation = Basis.looking_at(look_direction, Vector3.UP).get_euler()
+			# Smoothly rotate towards the target direction
+			zombie.rotation.y = lerp_angle(zombie.rotation.y, target_rotation.y, rotation_speed * delta)
+
+# Make the zombie face toward a specific target position
+static func face_target(zombie, target_position: Vector3, delta: float, rotation_speed: float = 5.0):
+	var direction = (target_position - zombie.global_transform.origin).normalized()
+	direction.y = 0  # Keep on the horizontal plane
+
+	if direction != Vector3.ZERO:
+		var target_rotation = Basis.looking_at(direction, Vector3.UP).get_euler()
+		zombie.rotation.y = lerp_angle(zombie.rotation.y, target_rotation.y, rotation_speed * delta)
+
+# Find a position behind the target
+static func get_position_behind_target(target, distance: float = 2.0):
+	var target_transform = target.global_transform
+	# Get the backward direction of the target
+	var behind_dir = -target_transform.basis.z.normalized()
+	# Calculate position behind the target
+	return target_transform.origin + (behind_dir * distance)
+
+# Get a random position on the navigation mesh
+static func get_random_nav_position(map, current_position: Vector3, min_distance: float = 10.0, max_distance: float = 30.0):
+	# Generate random direction on horizontal plane
+	var random_direction = Vector3(
+		randf_range(-1.0, 1.0),
+		0.0,
+		randf_range(-1.0, 1.0)
+	).normalized()
+	
+	var random_distance = randf_range(min_distance, max_distance)
+	var target_position = current_position + (random_direction * random_distance)
+
+	# Get closest point on navigation mesh
+	return NavigationServer3D.map_get_closest_point(map.get_navigation_map(), target_position)
+	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var player = get_tree().get_first_node_in_group("Player")

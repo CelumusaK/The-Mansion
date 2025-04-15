@@ -1,15 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://cs08r7nmhcpm"]
+[gd_scene load_steps=6 format=3 uid="uid://cs08r7nmhcpm"]
 
 [ext_resource type="ArrayMesh" uid="uid://c25qu6bmb2344" path="res://game/scenes/items/torch/torch.res" id="1_57blb"]
 [ext_resource type="Script" uid="uid://cius56ssc3wi6" path="res://game/scenes/items/torch/torch.gd" id="1_x8p5b"]
+[ext_resource type="AudioStream" uid="uid://d1i2pwnks2253" path="res://assets/sounds/breaking-glass.wav" id="3_2erow"]
+[ext_resource type="AudioStream" uid="uid://cajfrxg6rmijn" path="res://assets/sounds/laser.ogg" id="4_ska0o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_57blb"]
 size = Vector3(0.272461, 0.199219, 0.200928)
 
-[node name="Torch" type="RigidBody3D" node_paths=PackedStringArray("light")]
+[node name="Torch" type="RigidBody3D" node_paths=PackedStringArray("light", "light_node")]
 collision_layer = 2
+freeze = true
 script = ExtResource("1_x8p5b")
 light = NodePath("Light")
+light_node = NodePath("SpotLight3D")
 
 [node name="torch" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
@@ -21,7 +25,7 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000792511, 0.0206552, -0.0836352)
 light_energy = 2.0
 spot_range = 7.44219
-spot_angle = 16.3088
+spot_angle = 25.6228
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.999969, -0.00789425, 0.000369473, 0.000435612, 0.00837875, -0.999965, 0.00789088, 0.999934, 0.00838193, -0.00121491, 0.0709563, 0.150904)
@@ -31,3 +35,36 @@ shape = SubResource("BoxShape3D_57blb")
 transform = Transform3D(1, 0, 0, 0, -1.26666e-07, -2.46688, 0, 2.89779, -1.07831e-07, 0, -0.00437948, -0.00108159)
 collision_mask = 8
 hit_from_inside = true
+
+[node name="GlassBreaking" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_2erow")
+
+[node name="LightRay" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_ska0o")
+volume_db = -30.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="time" type="Label" parent="CanvasLayer/Control/CenterContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "1111"

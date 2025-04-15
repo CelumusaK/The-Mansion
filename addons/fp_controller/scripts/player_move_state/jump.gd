@@ -1,5 +1,7 @@
 class_name Jump extends PlayerState
 
+@export var jump_2: AudioStreamPlayer3D
+
 var init_state: int
 var input_dir: Vector2
 var move_speed: float
@@ -8,6 +10,7 @@ var has_direction: bool
 
 
 func enter(msg := {}) -> void:
+	jump_2.play()
 	if player.is_crouched:
 		player.stand_up()
 	if msg:
@@ -16,6 +19,12 @@ func enter(msg := {}) -> void:
 	move_speed = player.walk_back_speed
 	has_direction = player.input_direction != Vector2.ZERO
 	player.velocity.y = sqrt(player.jump_height * 2 * player.gravity)
+
+func exit():
+	pass
+	
+func update(delta: float):
+	pass
 
 
 func physics_update(_delta: float) -> void:

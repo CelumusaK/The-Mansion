@@ -1,15 +1,28 @@
 class_name Walk extends PlayerState
 
+@export var walk_breath: AudioStreamPlayer3D
+@export var walking_footstep: AudioStreamPlayer3D
+@export var stamina: ProgressBar
+
 var input_dir: Vector2
 var move_speed: float
 
 
 func enter(_msg := {}) -> void:
+	walking_footstep.play()
+	walk_breath.play()
 	player.view_bobbing_amount = player.default_view_bobbing_amount
+
+func exit():
+	walking_footstep.stop()
+	walk_breath.stop()
+	
+func update(delta: float):
+	pass
 
 
 func handle_input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed(player.SPRINT) && player.allow_sprint:
+	if Input.is_action_just_pressed(player.SPRINT) && player.allow_sprint && stamina.value >= stamina.max_value / 2:
 		state_machine.transition_to(state_machine.movement_state[state_machine.SPRINT])
 	
 	if event.is_action_pressed(player.JUMP) && player.is_on_floor() && player.allow_jump:

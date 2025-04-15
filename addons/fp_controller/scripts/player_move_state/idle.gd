@@ -1,9 +1,15 @@
 class_name Idle extends PlayerState
 
+@export var idle_breath: AudioStreamPlayer3D
+@export var stamina: ProgressBar
 
 func enter(_msg := {}) -> void:
+	idle_breath.play()
 	player.is_affected_by_gravity = true
 	player.velocity = Vector3.ZERO
+	
+func exit():
+	idle_breath.stop()
 
 
 func handle_input(event: InputEvent) -> void:
@@ -31,7 +37,7 @@ func physics_update(_delta: float) -> void:
 	var input_dir := player.input_direction
 	
 	if input_dir && player.can_sprint:
-		if Input.is_action_just_pressed(player.SPRINT) && player.allow_sprint:
+		if Input.is_action_just_pressed(player.SPRINT) && player.allow_sprint && stamina.value >= stamina.max_value / 2:
 			state_machine.transition_to(state_machine.movement_state[state_machine.SPRINT])
 		else:
 			state_machine.transition_to(state_machine.movement_state[state_machine.WALK])

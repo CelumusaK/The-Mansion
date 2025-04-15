@@ -60,6 +60,9 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var left_hand: Node3D = $CameraPivot/SmoothCamera/LeftHand
 
 @onready var label: Label = $UserInterface/CrosshairContainer/Label
+@onready var victory: CenterContainer = $UserInterface/Victory
+@onready var anim_victory: AnimationPlayer = $UserInterface/Victory/AnimVictory
+@onready var _damage: AudioStreamPlayer3D = $Damage
 
 var pick_up_item
 var fov_angle = 90.0  # Field of view in degrees
@@ -86,19 +89,28 @@ var can_jump: bool = true
 var can_crouch: bool = true
 var can_sprint: bool = true
 var can_pause: bool = true
+var is_sprinting: bool = false
 
 const HAND_MIRROR = preload("res://game/scenes/items/mirror/game_mirror1.tscn")
 const TORCH = preload("res://game/scenes/items/torch/torch.tscn")
+@onready var health_bar: ProgressBar = $UserInterface/HealthBar
+@onready var color_rect: ColorRect = $UserInterface/ColorRect
+@onready var stamina: ProgressBar = $UserInterface/Stamina
 
 var player_torch: RayCast3D
+var glass_breaking: bool = false
+var time: float = 0.0
 
 func _ready() -> void:
+	stamina.value = stamina.max_value
+	health_bar.value = health_bar.max_value
 	default_view_bobbing_amount = view_bobbing_amount
+	victory.visible = false
 	if can_pause:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion or event is InputEventScreenDrag:
 		mouse_motion = -event.relative * 0.001
 	
 	if can_pause:
@@ -110,11 +122,6 @@ func _physics_process(delta: float) -> void:
 	if can_move:
 		if Input.get_vector(MOVE_LEFT, MOVE_RIGHT, MOVE_FORWARD, MOVE_BACK):
 			input_direction = Input.get_vector(MOVE_LEFT, MOVE_RIGHT, MOVE_FORWARD, MOVE_BACK)
-		elif Input.get_connected_joypads().size() != 0:
-			input_direction = Vector2(Input.get_joy_axis(0, JOY_AXIS_LEFT_X), Input.get_joy_axis(0, JOY_AXIS_LEFT_Y))
-			var x = Input.get_joy_axis(0, JOY_AXIS_LEFT_X)
-			var y = Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)
-			movement_strength = Vector2(x, y).length()
 		else:
 			input_direction = Vector2.ZERO
 	
@@ -132,6 +139,18 @@ func _physics_process(delta: float) -> void:
 
 
 func _process(_delta: float):
+	if health_bar.value <= 0:
+		get_tree().reload_current_scene()
+	
+	if !is_sprinting:
+		stamina.value += 1
+		
+	if color_rect.visible:
+		time += _delta
+		if time > 0.5:
+			color_rect.visible = false
+			time = 0.0
+			
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		# Handling camera in '_process' so that camera movement is framerate independent
 		_handle_camera_motion()
@@ -139,14 +158,26 @@ func _process(_delta: float):
 	if right_hand.get_child_count() > 0:
 		var item = right_hand.get_child(0)
 		if item is Torch:
-			if item.light.is_colliding():
-				print("NOICE")
+			glass_breaking = item.is_glass_breaking
+				
+			if item.is_game_won == true:
+				set_physics_process(false)
+				if !victory.visible:
+					anim_victory.play("won")
+				victory.visible = true
+				
 
 	if left_hand.get_child_count() > 0:
 		var item = left_hand.get_child(0)  # <- FIXED
 		if item is Torch:
-			if item.light.is_colliding():
-				print("NOICE")
+			glass_breaking = item.is_glass_breaking
+				
+			if item.is_game_won == true:
+				set_physics_process(false)
+				if !victory.visible:
+					
+					anim_victory.play("won")
+				victory.visible = true
 		
 	if pick_up.is_colliding():
 		if pick_up.get_collider() is HandMirror:
@@ -248,6 +279,30 @@ func check_hands() -> bool:
 		return true
 	return false
 
+func take_damage(damage):
+	_damage.play()
+	animation_player.play("damage")
+	color_rect.visible = true
+	health_bar.value -= damage
+	health_bar.value = health_bar.value
+	shake_camera()
+
+func shake_camera():
+	var camera = get_tree().get_first_node_in_group("PlayerCamera")  # Ensure camera is in "PlayerCamera" group
+	if not camera:
+		return
+
+	var tween = get_tree().create_tween()
+	var original_position = camera.transform.origin
+
+	# Increase intensity and randomness
+	for _i in range(8):  # More shakes
+		var random_offset = Vector3(randf_range(-0.3, 0.3), randf_range(-0.3, 0.3), randf_range(-0.2, 0.2))
+		tween.tween_property(camera, "transform:origin", original_position + random_offset, 0.03)  # Faster shakes
+
+	# Smoothly reset position
+	tween.tween_property(camera, "transform:origin", original_position, 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
 
 func _handle_camera_motion() -> void:
 	rotate_y(mouse_motion.x * camera_sensitivity)
@@ -342,3 +397,14 @@ func _add_input_map_event(action_name: String, keycode: int) -> void:
 	event.keycode = keycode
 	InputMap.add_action(action_name)
 	InputMap.action_add_event(action_name, event)
+
+
+func _on_restart_pressed() -> void:
+	get_tree().reload_current_scene()
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()
+
+
+func _on_retry_pressed() -> void:
+	get_tree().reload_current_scene()

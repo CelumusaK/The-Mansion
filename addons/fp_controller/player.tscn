@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dlbkch6iuy8gn"]
+[gd_scene load_steps=38 format=3 uid="uid://dlbkch6iuy8gn"]
 
 [ext_resource type="Script" uid="uid://dq21xphwqcv2x" path="res://addons/fp_controller/scripts/player.gd" id="1_5ras8"]
 [ext_resource type="Script" uid="uid://b78cs6djckl0b" path="res://addons/fp_controller/scripts/smooth_camera.gd" id="2_1py82"]
@@ -14,6 +14,13 @@
 [ext_resource type="Script" uid="uid://bsl0i2ek6vq1s" path="res://addons/fp_controller/scripts/player_move_state/grab.gd" id="11_gkc45"]
 [ext_resource type="Script" uid="uid://b6xsykgp7h7pj" path="res://addons/fp_controller/scripts/player_move_state/slide.gd" id="12_bqyfq"]
 [ext_resource type="Script" uid="uid://bix7vl530vbcc" path="res://addons/fp_controller/scripts/player_ui.gd" id="12_d7xi0"]
+[ext_resource type="AudioStream" uid="uid://cjy71pksafbxt" path="res://assets/sounds/breath/runandbreath.mp3" id="15_62dvf"]
+[ext_resource type="AudioStream" uid="uid://dggabx0cnimyv" path="res://assets/sounds/breath/breathing-slow-distraught-tired.mp3" id="16_y16om"]
+[ext_resource type="AudioStream" uid="uid://bj663f10ud1i8" path="res://assets/sounds/breath/breath.mp3" id="17_nycc1"]
+[ext_resource type="AudioStream" uid="uid://bvce1sqpwsfpa" path="res://assets/sounds/footsteps/footsteps walking outside.mp3" id="18_bjt1r"]
+[ext_resource type="AudioStream" uid="uid://cdtfkktwkhq6u" path="res://assets/sounds/footsteps/snow-footsteps-running.mp3" id="19_jajtq"]
+[ext_resource type="AudioStream" uid="uid://doyfttd6rsoab" path="res://assets/sounds/jump-sound.mp3" id="20_w7r7y"]
+[ext_resource type="AudioStream" uid="uid://dfiednosqnq0j" path="res://assets/sounds/damage-scream.wav" id="21_hwrxm"]
 
 [sub_resource type="Animation" id="Animation_5udu4"]
 length = 0.001
@@ -100,6 +107,18 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 1.8, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("UserInterface/ColorRect:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_abp0t"]
@@ -190,10 +209,27 @@ tracks/6/keys = {
 "values": [Vector3(0, 1.8, 0), Vector3(0, 0.9, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_62dvf"]
+resource_name = "damage"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UserInterface/ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4kkkr"]
 _data = {
 &"RESET": SubResource("Animation_5udu4"),
-&"crouch": SubResource("Animation_abp0t")
+&"crouch": SubResource("Animation_abp0t"),
+&"damage": SubResource("Animation_62dvf")
 }
 
 [sub_resource type="Animation" id="Animation_caog8"]
@@ -240,7 +276,51 @@ height = 1.8
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_aufvi"]
 height = 1.8
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1ecc1"]
+[sub_resource type="Animation" id="Animation_ttf0e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_njw88"]
+resource_name = "won"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vfxpb"]
+_data = {
+&"RESET": SubResource("Animation_ttf0e"),
+&"won": SubResource("Animation_njw88")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62dvf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y16om"]
+bg_color = Color(1, 0.00392157, 0.176471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nycc1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bjt1r"]
+bg_color = Color(0.0980392, 0.6, 0.376471, 1)
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_layer = 4
@@ -319,7 +399,7 @@ skeleton = NodePath("../..")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.5, 2.08165e-12)
 
-[node name="SmoothCamera" type="Camera3D" parent="CameraPivot"]
+[node name="SmoothCamera" type="Camera3D" parent="CameraPivot" groups=["PlayerCamera"]]
 script = ExtResource("2_1py82")
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="CameraPivot/SmoothCamera"]
@@ -329,7 +409,7 @@ visible = false
 transform = Transform3D(0.879058, 0.476714, 0, -0.476714, 0.879058, 0, 0, 0, 1, 0.3, -0.247, -0.275)
 
 [node name="LeftHand" type="Node3D" parent="CameraPivot/SmoothCamera"]
-transform = Transform3D(0.951562, -0.307456, 0, 0.307456, 0.951562, 0, 0, 0, 1, -0.266, -0.248, -0.252)
+transform = Transform3D(0.951562, -0.307456, -1.45751e-10, 0.307209, 0.950797, -0.0400969, 0.012328, 0.0381547, 0.999196, -0.266, -0.248, -0.252)
 
 [node name="Torch" parent="CameraPivot/SmoothCamera/LeftHand" instance=ExtResource("3_njw88")]
 
@@ -342,17 +422,26 @@ unique_name_in_owner = true
 script = ExtResource("2_wwa58")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine"]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("idle_breath", "stamina")]
 script = ExtResource("3_xe000")
+idle_breath = NodePath("../../IdleBreath")
+stamina = NodePath("../../UserInterface/Stamina")
 
-[node name="Jump" type="Node" parent="StateMachine"]
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("jump_2")]
 script = ExtResource("4_1lr3q")
+jump_2 = NodePath("../../Jump2")
 
-[node name="Walk" type="Node" parent="StateMachine"]
+[node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("walk_breath", "walking_footstep", "stamina")]
 script = ExtResource("5_bwgwe")
+walk_breath = NodePath("../../WalkBreath")
+walking_footstep = NodePath("../../WalkingFootstep")
+stamina = NodePath("../../UserInterface/Stamina")
 
-[node name="Sprint" type="Node" parent="StateMachine"]
+[node name="Sprint" type="Node" parent="StateMachine" node_paths=PackedStringArray("run_breath", "run_footsteps", "stamina")]
 script = ExtResource("6_b4xrx")
+run_breath = NodePath("../../RunBreath")
+run_footsteps = NodePath("../../RunningFootstep")
+stamina = NodePath("../../UserInterface/Stamina")
 
 [node name="Fall" type="Node" parent="StateMachine"]
 script = ExtResource("7_dv6ye")
@@ -400,13 +489,127 @@ visible = false
 layout_mode = 2
 text = "PickUp"
 
-[node name="FieldOfView" type="Area3D" parent="."]
-visible = false
-collision_layer = 0
-collision_mask = 0
+[node name="Victory" type="CenterContainer" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FieldOfView"]
-shape = SubResource("BoxShape3D_1ecc1")
+[node name="PanelContainer" type="PanelContainer" parent="UserInterface/Victory"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/Victory/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="UserInterface/Victory/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "YOU HAVE SUCCESFULLY BANISHED
+THE GHOST"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UserInterface/Victory/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 170
+
+[node name="Restart" type="Button" parent="UserInterface/Victory/PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+text = "Restart"
+
+[node name="Quit" type="Button" parent="UserInterface/Victory/PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+text = "Quit"
+
+[node name="AnimVictory" type="AnimationPlayer" parent="UserInterface/Victory"]
+libraries = {
+&"": SubResource("AnimationLibrary_vfxpb")
+}
+
+[node name="HealthBar" type="ProgressBar" parent="UserInterface"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 47.0
+offset_right = 303.0
+offset_bottom = 68.0
+theme_override_styles/background = SubResource("StyleBoxFlat_62dvf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_y16om")
+value = 50.0
+show_percentage = false
+
+[node name="Retry" type="Button" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_top = 49.0
+offset_bottom = 80.0
+grow_horizontal = 0
+text = "Retry"
+
+[node name="ColorRect" type="ColorRect" parent="UserInterface"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 0.615686)
+
+[node name="Stamina" type="ProgressBar" parent="UserInterface"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 73.0
+offset_right = 305.0
+offset_bottom = 92.0
+theme_override_styles/background = SubResource("StyleBoxFlat_nycc1")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bjt1r")
+max_value = 200.0
+value = 50.0
+show_percentage = false
+
+[node name="RunBreath" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("15_62dvf")
+volume_db = 5.0
+max_db = 6.0
+
+[node name="IdleBreath" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("16_y16om")
+volume_db = -5.0
+max_db = 6.0
+area_mask = 5
+
+[node name="WalkBreath" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("17_nycc1")
+volume_db = -20.0
+
+[node name="WalkingFootstep" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("18_bjt1r")
+volume_db = 10.0
+
+[node name="RunningFootstep" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("19_jajtq")
+volume_db = -10.0
+
+[node name="Jump2" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("20_w7r7y")
+
+[node name="Damage" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("21_hwrxm")
 
 [connection signal="transitioned" from="StateMachine" to="." method="_on_state_machine_transitioned"]
 [connection signal="draw" from="UserInterface/CrosshairContainer/Crosshair" to="UserInterface" method="_on_crosshair_draw"]
+[connection signal="pressed" from="UserInterface/Victory/PanelContainer/VBoxContainer/HBoxContainer/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="UserInterface/Victory/PanelContainer/VBoxContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="UserInterface/Retry" to="." method="_on_retry_pressed"]
